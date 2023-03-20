@@ -21,7 +21,10 @@ submitForm.addEventListener("submit", (e) => {
         fetch(`https://datausa.io/api/data?drilldowns=${drilldown.value}&measures=Population&year=${submitYear.value}`)
         .then((response) => response.json())
         .then((d) => {
-            statsArea.innerText = `The population of the nation in the year ${submitYear.value} was ${d.data[0]["Population"]}!`
+            statsArea.innerHTML = "";
+            const p = document.createElement('p');
+            const populationData = statsArea.appendChild(p)
+            populationData.innerText = `The population of the nation in the year ${submitYear.value} was ${d.data[0]["Population"]}!`
         })
     }
     else{
@@ -30,7 +33,10 @@ submitForm.addEventListener("submit", (e) => {
         .then((d) => {
             for(const state in d.data){
                 if(d.data[state]["State"] === stateSelect.value){
-                    statsArea.innerText = `The population of ${stateSelect.value} in ${submitYear.value} was ${d.data[state]["Population"]}!`
+                    statsArea.innerHTML = "";
+                    const p = document.createElement('p');
+                    const populationData = statsArea.appendChild(p)
+                    populationData.innerText = `The population of ${stateSelect.value} in ${submitYear.value} was ${d.data[state]["Population"]}!`
                 }
             }
 

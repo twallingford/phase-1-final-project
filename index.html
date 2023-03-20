@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
     <title>US State Population Finder</title>
 </head>
 <body>
     <h1>Get Population Data</h1>
+    <!--The query box is to separate the search box from anything else that may be potentially added to the paeg.-->
     <div class="query-box">
         <form id="submit-form">
             <label for="specificity">Nation or State-level population data?</label>
@@ -17,8 +20,9 @@
                     <option value="Nation">Nation</option>
                 </select>
                 <br><br>
+            <!--Note to self: How do I disable the state menu until "State" is selected?-->
             <section id="state-selector">
-                <label for="state" class="state-label">Which state?</label>
+                <label for="state" class="state-label">If "State" is selected above, which state?</label>
                 <select name="state" class="state-label" id="state-select">
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>

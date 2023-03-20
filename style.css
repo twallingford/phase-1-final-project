@@ -2,18 +2,28 @@ body {
     background-color: black;
 }
 
-h1 {
-    color: whitesmoke;
-    position: absolute;
-    justify-content: center;
-    top: 30%;
-    left: 39%;
-}
-
 .query-box {
     background-color: grey;
     box-shadow: 8px 8px 5px 0px rgba(216, 14, 155, 0.3); 
     position: absolute;
     left: 35%;
     top: 38%;
+}
+
+#stats-area {
+    background-color: grey;
+    box-shadow: 8px 8px 5px 0px rgba(216, 14, 155, 0.3); 
+    position: absolute;
+    left: 35%;
+    top: 100%;
+}
+
+#page-header {
+    color: black;
+    font-size: 40px;
+}
+
+#stats-header {
+    color: black;
+    font-size: 40px;
 }

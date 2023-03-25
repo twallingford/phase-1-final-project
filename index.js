@@ -2,8 +2,9 @@
 const dateMin = new Date().getFullYear() - 10;
 const dateMax = new Date().getFullYear() - 3;
 
-//Empty array for sorting functionality
-const stateObjs = [];
+//Empty arrays for sorting functionality
+let stateObjs = [];
+const popArray = [];
 
 //Query selectors
 const submitYear = document.querySelector("#submit-year");
@@ -45,6 +46,8 @@ submitForm.addEventListener("submit", (e) => {
                 retain.innerText = `Nation - ${submitYear.value} - ${d.data[0]["Population"]}`
                 retainArea.appendChild(retain);
                 stateObjs.push({"location": "Nation", "population": d.data[0]["Population"], "year": submitYear.value});
+                popArray.push(d.data[0]["Population"])
+                popArray.sort();
             })
             populationData.appendChild(saveButton);
         })
@@ -63,9 +66,11 @@ submitForm.addEventListener("submit", (e) => {
                     saveButton.addEventListener("click", () => {
                         const retain = document.createElement("div");
                         retain.setAttribute("class", "card");
-                        retain.innerText = `${stateSelect.value} - ${submitYear.value} - ${d.data[0]["Population"]}`
+                        retain.innerText = `${stateSelect.value} - ${submitYear.value} - ${d.data[state]["Population"]}`
                         retainArea.appendChild(retain);
-                        stateObjs.push({"location": stateSelect.value, "population": d.data[0]["Population"], "year": submitYear.value});
+                        stateObjs.push({"location": stateSelect.value, "population": d.data[state]["Population"], "year": submitYear.value});
+                        popArray.push(d.data[state]["Population"])
+                        popArray.sort();
                     })
                     populationData.appendChild(saveButton);
                 }
@@ -88,26 +93,32 @@ drilldown.addEventListener("change", () => {
 })
 
 //Event listener for sort by population function
-popSort.addEventListener("click", () => {
-    const populations = [];
+popSort.addEventListener("click", popSorter);
+
+function popSorter(){
     const sorted = [];
-    for(const item in stateObjs){
-        populations.push(stateObjs[item]["population"]);
-    }
-    populations.sort();
-    for(const number in populations){
-        for(const item in stateObjs){
-            if(populations[number] === stateObjs[item]["population"]){
-                sorted.push(stateObjs[item]);
-                stateObjs.splice(item, item);
-                continue
+
+    for(const pop in popArray){
+        for(const dataPoint in stateObjs){
+            if(popArray[pop] === stateObjs[dataPoint]["population"]){
+                sorted.push(stateObjs[dataPoint]);
             }
         }
     }
-    for(const item in sorted){
-        stateObjs.push(sorted[item]);
+
+    stateObjs = sorted;
+
+    retainArea.innerHTML = "";
+
+    for(const dataPoint in stateObjs){
+        const retain = document.createElement("p");
+        retain.setAttribute("class", "card");
+        retain.innerText = `${stateObjs[dataPoint]["location"]} - ${stateObjs[dataPoint]["year"]} - ${stateObjs[dataPoint]["population"]}`
+        retainArea.appendChild(retain);
     }
-    console.log(stateObjs);
-})
 
+}
 
+/*Issues to fix:
+If you change the year or location and retain without hitting "Submit" first then it retain the year in the menu and the location chosen, but it will not change the population.
+What if two results have the same population? Presumably the first one in the object array would be counted twice. How to get around that?*/

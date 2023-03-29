@@ -23,5 +23,6 @@ body {
 }
 
 #retained {
-    background-color: aqua;
+    background-color: grey;
+    box-shadow: 8px 8px 5px 0px rgba(216, 14, 155, 0.3); 
 }

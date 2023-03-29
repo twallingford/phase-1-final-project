@@ -1,12 +1,9 @@
-//Variables
 const dateMin = new Date().getFullYear() - 10;
 const dateMax = new Date().getFullYear() - 3;
 
-//Empty arrays for sorting functionality
 let stateObjs = [];
 const popArray = [];
 
-//Query selectors
 const submitYear = document.querySelector("#submit-year");
 const yearLabel = document.querySelector("#year-select-label");
 const submitForm = document.querySelector("#submit-form");
@@ -16,14 +13,12 @@ const statsArea = document.querySelector("#stats-area");
 const retainArea = document.querySelector("#retained");
 const popSort = document.querySelector("#pop-sort");
 
-//Initial setup
 yearLabel.innerText = `Select a year between ${dateMin} and ${dateMax}.`;
 
 submitYear.setAttribute("min", dateMin);
 submitYear.setAttribute("max", dateMax);
 submitYear.setAttribute("value", dateMin);
 
-//Event listener for search
 submitForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -40,7 +35,7 @@ submitForm.addEventListener("submit", (e) => {
             const p = document.createElement('p');
             const populationData = statsArea.appendChild(p)
             populationData.innerText = `The population of the nation in the year ${submitYear.value} was ${d.data[0]["Population"]}!`
-            //Event listener for retaining national stat
+            
             saveButton.addEventListener("click", () => {
                 const retain = document.createElement("p");
                 retain.innerText = `Nation - ${submitYear.value} - ${d.data[0]["Population"]}`
@@ -56,13 +51,14 @@ submitForm.addEventListener("submit", (e) => {
         fetch(`https://datausa.io/api/data?drilldowns=State&measures=Population&year=${submitYear.value}`)
         .then((response) => response.json())
         .then((d) => {
+            //For each/map()
             for(const state in d.data){
                 if(d.data[state]["State"] === stateSelect.value){
                     statsArea.innerHTML = "";
                     const p = document.createElement('p');
                     const populationData = statsArea.appendChild(p)
                     populationData.innerText = `The population of ${stateSelect.value} in ${submitYear.value} was ${d.data[state]["Population"]}!`
-                    //Event listener for retaining state stat
+            
                     saveButton.addEventListener("click", () => {
                         const retain = document.createElement("div");
                         retain.setAttribute("class", "card");
@@ -80,7 +76,6 @@ submitForm.addEventListener("submit", (e) => {
     }
 })
 
-//Event listener for disabling/enabling state list
 drilldown.addEventListener("change", () => {
     if(drilldown.value === "State"){
         stateSelect.disabled = false;
@@ -92,7 +87,6 @@ drilldown.addEventListener("change", () => {
     }
 })
 
-//Event listener for sort by population function
 popSort.addEventListener("click", popSorter);
 
 function popSorter(){
@@ -120,5 +114,5 @@ function popSorter(){
 }
 
 /*Issues to fix:
-If you change the year or location and retain without hitting "Submit" first then it retain the year in the menu and the location chosen, but it will not change the population.
-What if two results have the same population? Presumably the first one in the object array would be counted twice. How to get around that?*/
+- DRY the code
+- Try to use more "for each"*/

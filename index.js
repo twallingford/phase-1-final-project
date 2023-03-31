@@ -13,6 +13,13 @@ const statsArea = document.querySelector("#stats-area");
 const retainArea = document.querySelector("#retained");
 const popSort = document.querySelector("#pop-sort");
 
+function printSorted(dataPoint){
+    const retain = document.createElement("p");
+    retain.setAttribute("class", "card");
+    retain.innerText = `${dataPoint["location"]} - ${dataPoint["year"]} - ${dataPoint["population"]}`
+    retainArea.appendChild(retain);
+}
+
 yearLabel.innerText = `Select a year between ${dateMin} and ${dateMax}.`;
 
 submitYear.setAttribute("min", dateMin);
@@ -51,7 +58,6 @@ submitForm.addEventListener("submit", (e) => {
         fetch(`https://datausa.io/api/data?drilldowns=State&measures=Population&year=${submitYear.value}`)
         .then((response) => response.json())
         .then((d) => {
-            //For each/map()
             for(const state in d.data){
                 if(d.data[state]["State"] === stateSelect.value){
                     statsArea.innerHTML = "";
@@ -79,11 +85,9 @@ submitForm.addEventListener("submit", (e) => {
 drilldown.addEventListener("change", () => {
     if(drilldown.value === "State"){
         stateSelect.disabled = false;
-        console.log(stateSelect)
     }
     else if (drilldown.value === "Nation"){
         stateSelect.disabled = true;
-        console.log("Nation");
     }
 })
 
@@ -104,15 +108,5 @@ function popSorter(){
 
     retainArea.innerHTML = "";
 
-    for(const dataPoint in stateObjs){
-        const retain = document.createElement("p");
-        retain.setAttribute("class", "card");
-        retain.innerText = `${stateObjs[dataPoint]["location"]} - ${stateObjs[dataPoint]["year"]} - ${stateObjs[dataPoint]["population"]}`
-        retainArea.appendChild(retain);
-    }
-
+    stateObjs.forEach(printSorted);
 }
-
-/*Issues to fix:
-- DRY the code
-- Try to use more "for each"*/
